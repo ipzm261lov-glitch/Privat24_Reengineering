@@ -1,0 +1,46 @@
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime files
+pids/
+*.pid
+*.seed
+
+# Coverage and test output
+coverage/
+.nyc_output/
+
+# Generated Prisma Client
+backend/src/generated/prisma/
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# AI coding assistant documentation
+backend/.agents/
+backend/.claude/
+backend/.windsurf/

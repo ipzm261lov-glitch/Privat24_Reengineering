@@ -1,0 +1,102 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AccountStatus {
+  ACTIVE
+  BLOCKED
+  CLOSED
+}
+
+enum TransferStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum TransactionType {
+  DEBIT
+  CREDIT
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  username     String    @unique
+  passwordHash String
+  fullName     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  accounts     Account[]
+  sessions     Session[]
+}
+
+model Account {
+  id          String        @id @default(uuid()) @db.Uuid
+  accountNumber String      @unique @db.VarChar(34)
+  balance     Decimal       @default(0) @db.Decimal(15, 2)
+  currency    String        @default("UAH") @db.VarChar(3)
+  status      AccountStatus @default(ACTIVE)
+  userId      String        @db.Uuid
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  user               User          @relation(fields: [userId], references: [id])
+  transactions       Transaction[]
+  outgoingTransfers  Transfer[]    @relation("TransferFrom")
+  incomingTransfers  Transfer[]    @relation("TransferTo")
+
+  @@index([userId])
+}
+
+model Transfer {
+  id            String         @id @default(uuid()) @db.Uuid
+  fromAccountId String         @db.Uuid
+  toAccountId   String         @db.Uuid
+  amount        Decimal        @db.Decimal(15, 2)
+  description   String?
+  status        TransferStatus @default(PENDING)
+  createdAt     DateTime       @default(now())
+  completedAt   DateTime?
+
+  fromAccount Account       @relation("TransferFrom", fields: [fromAccountId], references: [id])
+  toAccount   Account       @relation("TransferTo", fields: [toAccountId], references: [id])
+  transactions Transaction[]
+
+  @@index([fromAccountId])
+  @@index([toAccountId])
+}
+
+model Transaction {
+  id           String          @id @default(uuid()) @db.Uuid
+  accountId    String          @db.Uuid
+  transferId   String?         @db.Uuid
+  type         TransactionType
+  amount       Decimal         @db.Decimal(15, 2)
+  balanceAfter Decimal         @db.Decimal(15, 2)
+  createdAt    DateTime        @default(now())
+
+  account  Account   @relation(fields: [accountId], references: [id])
+  transfer Transfer? @relation(fields: [transferId], references: [id])
+
+  @@index([accountId])
+  @@index([transferId])
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userId    String   @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}

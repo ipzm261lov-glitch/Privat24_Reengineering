@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f8f5">
+    <title>Privat24 Reimagined | Digital Banking</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+
+    <!-- Декоративний паралакс-фон -->
+    <div class="ambient-background" aria-hidden="true">
+        <div class="ambient-orb orb-one"></div>
+        <div class="ambient-orb orb-two"></div>
+        <div class="ambient-orb orb-three"></div>
+        <div class="ambient-grid"></div>
+    </div>
+
+    <!-- Екран авторизації -->
+    <main id="login-view" class="login-view">
+        <section class="login-card">
+            <div class="brand">
+                <div class="brand-icon">P</div>
+                <span>privat<span class="brand-accent">24</span></span>
+            </div>
+
+            <div class="login-heading">
+                <span class="eyebrow">DIGITAL BANKING</span>
+                <h1>Ваші фінанси.<br>Ваші правила.</h1>
+                <p>Увійдіть до особистого кабінету, щоб керувати рахунками та платежами.</p>
+            </div>
+
+            <form id="login-form">
+                <label for="username">Логін</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Введіть логін"
+                    autocomplete="username"
+                    required
+                >
+
+                <label for="password">Пароль</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Введіть пароль"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <p id="login-error" class="message error" hidden></p>
+
+                <button type="submit" class="primary-button">
+                    Увійти до кабінету <span>→</span>
+                </button>
+            </form>
+
+            <p class="login-footer">Безпечний доступ до ваших фінансів</p>
+        </section>
+
+        <div class="login-decoration">
+            <div class="decoration-glow"></div>
+            <div class="floating-card">
+                <div class="floating-card-top">
+                    <span>privat24</span>
+                    <span class="card-chip">◈</span>
+                </div>
+                <div class="card-number">•••• &nbsp; •••• &nbsp; •••• &nbsp; 2024</div>
+                <div class="floating-card-bottom">
+                    <span>YOUR MONEY. YOUR CONTROL.</span>
+                    <span>VISA</span>
+                </div>
+            </div>
+            <p class="decoration-caption">A smarter way to manage money.</p>
+        </div>
+    </main>
+
+    <!-- Основний застосунок -->
+    <div id="app-view" class="app-layout" hidden>
+
+        <aside class="sidebar">
+            <div class="brand sidebar-brand">
+                <div class="brand-icon">P</div>
+                <span>privat<span class="brand-accent">24</span></span>
+            </div>
+
+            <div class="sidebar-label">МЕНЮ</div>
+
+            <nav class="navigation">
+                <button class="nav-item active" data-section="dashboard">
+                    <span>⌂</span> Огляд
+                </button>
+                <button class="nav-item" data-section="accounts">
+                    <span>▣</span> Мої рахунки
+                </button>
+                <button class="nav-item" data-section="transfer">
+                    <span>⇄</span> Перекази
+                </button>
+                <button class="nav-item" data-section="transactions">
+                    <span>↗</span> Історія операцій
+                </button>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="security-note">
+                    <span>✦</span>
+                    <div>
+                        <strong>Ваші кошти під захистом</strong>
+                        <small>Безпечний банкінг</small>
+                    </div>
+                </div>
+                <button id="logout-button" class="logout-button">
+                    ↪ Вийти з акаунта
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <span class="eyebrow">PERSONAL BANKING</span>
+                    <h2 id="welcome-heading">Добрий день!</h2>
+                </div>
+                <div class="profile">
+                    <div class="profile-avatar">U</div>
+                    <span id="profile-name">Користувач</span>
+                </div>
+            </header>
+
+            <!-- Огляд -->
+            <section id="section-dashboard" class="content-section">
+                <div class="section-heading">
+                    <div>
+                        <h1>Огляд рахунків</h1>
+                        <p>Усе найважливіше про ваші фінанси в одному місці.</p>
+                    </div>
+                    <span class="live-indicator">● ONLINE</span>
+                </div>
+
+                <div class="dashboard-grid">
+                    <article class="balance-card" id="balance-card">
+                        <div class="balance-card-glow"></div>
+                        <div class="balance-card-header">
+                            <span>ЗАГАЛЬНИЙ БАЛАНС</span>
+                            <span class="balance-symbol">◈</span>
+                        </div>
+                        <div id="account-balance" class="balance-amount">0.00 ₴</div>
+                        <div class="balance-card-footer">
+                            <span id="account-number">Рахунок не вибрано</span>
+                            <span>UAH</span>
+                        </div>
+                    </article>
+
+                    <article class="stat-card">
+                        <span class="stat-icon">↗</span>
+                        <span class="stat-label">НАДХОДЖЕННЯ</span>
+                        <strong id="income-total">—</strong>
+                        <small>За історією операцій</small>
+                    </article>
+
+                    <article class="stat-card">
+                        <span class="stat-icon">↙</span>
+                        <span class="stat-label">ВИТРАТИ</span>
+                        <strong id="expense-total">—</strong>
+                        <small>За історією операцій</small>
+                    </article>
+                </div>
+
+                <div class="content-grid">
+                    <article class="panel accounts-panel">
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Мої рахунки</h3>
+                                <p>Ваші банківські рахунки</p>
+                            </div>
+                            <button class="text-button" data-section="accounts">Усі рахунки →</button>
+                        </div>
+                        <div id="dashboard-accounts" class="account-list">
+                            <p class="empty-state">Завантаження рахунків...</p>
+                        </div>
+                    </article>
+
+                    <article class="panel quick-panel">
+                        <div class="panel-heading">
+                            <div>
+                                <h3>Швидкі дії</h3>
+                                <p>Керуйте коштами зручно</p>
+                            </div>
+                        </div>
+                        <button class="quick-action" data-section="transfer">
+                            <span class="action-icon">⇄</span>
+                            <span><strong>Переказ коштів</strong><small>Надіслати гроші</small></span>
+                            <span class="action-arrow">→</span>
+                        </button>
+                        <button class="quick-action" data-section="transactions">
+                            <span class="action-icon">◷</span>
+                            <span><strong>Історія операцій</strong><small>Переглянути рух коштів</small></span>
+                            <span class="action-arrow">→</span>
+                        </button>
+                    </article>
+                </div>
+
+                <article class="panel recent-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Останні операції</h3>
+                            <p>Ваші останні фінансові дії</p>
+                        </div>
+                        <button class="text-button" data-section="transactions">Уся історія →</button>
+                    </div>
+                    <div id="recent-transactions" class="transaction-list">
+                        <p class="empty-state">Завантаження операцій...</p>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Рахунки -->
+            <section id="section-accounts" class="content-section" hidden>
+                <div class="section-heading">
+                    <div>
+                        <h1>Мої рахунки</h1>
+                        <p>Перегляд ваших банківських рахунків.</p>
+                    </div>
+                </div>
+                <div id="all-accounts" class="accounts-grid"></div>
+            </section>
+
+            <!-- Перекази -->
+            <section id="section-transfer" class="content-section" hidden>
+                <div class="section-heading">
+                    <div>
+                        <h1>Переказ коштів</h1>
+                        <p>Швидко та безпечно переказуйте кошти.</p>
+                    </div>
+                </div>
+
+                <article class="panel transfer-panel">
+                    <div class="transfer-intro">
+                        <div class="transfer-icon">⇄</div>
+                        <div>
+                            <h3>Новий переказ</h3>
+                            <p>Заповніть дані для переказу коштів.</p>
+                        </div>
+                    </div>
+
+                    <form id="transfer-form">
+                        <label for="from-account">Рахунок відправника</label>
+                        <select id="from-account" required>
+                            <option value="">Оберіть рахунок</option>
+                        </select>
+
+                        <label for="to-account">Рахунок отримувача</label>
+                        <select id="to-account" required>
+                            <option value="">Оберіть рахунок</option>
+                        </select>
+
+                        <label for="transfer-amount">Сума переказу (UAH)</label>
+                        <input
+                            type="number"
+                            id="transfer-amount"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                        >
+
+                        <label for="transfer-description">Призначення платежу</label>
+                        <input
+                            type="text"
+                            id="transfer-description"
+                            maxlength="200"
+                            placeholder="Наприклад, особистий переказ"
+                        >
+
+                        <p id="transfer-message" class="message" hidden></p>
+
+                        <button type="submit" class="primary-button">
+                            Підтвердити переказ <span>→</span>
+                        </button>
+                    </form>
+                </article>
+            </section>
+
+            <!-- Історія -->
+            <section id="section-transactions" class="content-section" hidden>
+                <div class="section-heading">
+                    <div>
+                        <h1>Історія операцій</h1>
+                        <p>Усі надходження та списання за рахунками.</p>
+                    </div>
+                </div>
+                <article class="panel">
+                    <div id="all-transactions" class="transaction-list">
+                        <p class="empty-state">Оберіть рахунок для перегляду історії.</p>
+                    </div>
+                </article>
+            </section>
+
+            <footer class="app-footer">
+                <span>Privat24 Reimagined</span>
+                <span>Digital banking experience · 2026</span>
+            </footer>
+        </main>
+    </div>
+
+</body>
+</html>
